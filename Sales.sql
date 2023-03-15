@@ -55,17 +55,24 @@
             -- AND Order_Date IS NOT NULL AND Order_Date <> 'Order_Date'
             -- AND Purchase_Address IS NOT NULL
     -- 
-    -- VIEW CREATION
+    -- VIEW CREATION & REMOVING DUPLICATES
         -- CREATE OR ALTER VIEW VW_Sales AS
-        -- SELECT Order_ID, Product, Quantity, Unit_Price, 
-            --  CONVERT(DEC(10,2), Quantity * Unit_Price) [Revenue],-- Date,
-            --  PARSE(FORMAT([Date],'d', 'en-GB') AS DATE USING 'AR-LB') [Date],
-            --  FORMAT(Date, 'T', 'en-GB') [Time],
-            --  SUBSTRING(Purchase_Address,0,CHARINDEX(',',Purchase_Address)) [Street Number],
-            --  SUBSTRING(Purchase_Address, CHARINDEX(',',Purchase_Address)+2, CHARINDEX(',',Purchase_Address, CHARINDEX(',',Purchase_Address)+2) - CHARINDEX(',',Purchase_Address) - 2 ) [City],
-            --  SUBSTRING(Purchase_Address,CHARINDEX(',',Purchase_Address, CHARINDEX(',',Purchase_Address)+2)+2,2) [State],
-            --  RIGHT(Purchase_Address, 5) [Zip Code]
-        -- FROM Sales
+        -- WITH VW_CTE AS
+            --  (SELECT *, ROW_NUMBER() OVER(PARTITION BY Order_ID, Product, Date, Time, City,[Zip Code] ORDER BY Order_ID) Rank
+            --  FROM 
+            --      (SELECT Order_ID, Product, Quantity, Unit_Price, 
+            --          CONVERT(DEC(10,2), Quantity * Unit_Price) [Revenue],-- Date,
+            --          PARSE(FORMAT([Date],'d', 'en-GB') AS DATE USING 'AR-LB') [Date],
+            --          FORMAT(Date, 'T', 'en-GB') [Time],
+            --          SUBSTRING(Purchase_Address,0,CHARINDEX(',',Purchase_Address)) [Street Number],
+            --          SUBSTRING(Purchase_Address, CHARINDEX(',',Purchase_Address)+2, CHARINDEX(',',Purchase_Address, CHARINDEX(',',Purchase_Address)+2) - CHARINDEX(',',Purchase_Address) - 2 ) [City],
+            --          SUBSTRING(Purchase_Address,CHARINDEX(',',Purchase_Address, CHARINDEX(',',Purchase_Address)+2)+2,2) [State],
+            --          RIGHT(Purchase_Address, 5) [Zip Code]
+            --      FROM Sales) Q)
+        -- --
+        -- SELECT Order_ID,Product,Quantity,Unit_Price,Revenue,[Date],[Time],[Street Number],City,[State],[Zip Code]
+        -- FROM VW_CTE
+        -- WHERE RANK = 1
 --
 /*          HIGH LEVEL ANALYSIS         */
     SELECT City, SUM(Revenue) [Revenue] 
@@ -173,3 +180,10 @@
     --
 --
 SELECT * FROM VW_Sales
+
+SELECT * 
+FROM 
+    (SELECT Order_ID, Product, Quantity, Date, Time, City,[Zip Code], 
+           ROW_NUMBER() OVER(PARTITION BY Order_ID, Product, Quantity, Date, Time, City,[Zip Code] ORDER BY Order_ID) Rank
+    FROM VW_Sales) Q
+WHERE Rank > 1
