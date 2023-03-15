@@ -86,34 +86,34 @@
 --
 /*          STORED PROCEDURES           */
     -- High Level Analysis
-        -- CREATE OR ALTER PROCEDURE sp_HighLevel_Analysis @segment NVARCHAR(50), @analysis NVARCHAR(50)
-        -- AS
-        -- BEGIN
-        --     DECLARE @sql NVARCHAR(MAX)
-        --     SET @sql = 'SELECT ' + @segment + ' [Category], 
-        --                 SUM(' + @analysis + ') [' + @analysis +']
-        --                 FROM vw_sales
-        --                 GROUP BY ' + @segment +
-        --                 ' ORDER BY SUM(' + @analysis + ') DESC'
-        --     EXEC sp_executesql @sql
-        -- END 
-        -- GO;
+        CREATE OR ALTER PROCEDURE sp_HighLevel_Analysis @segment NVARCHAR(50), @analysis NVARCHAR(50)
+        AS
+        BEGIN
+            DECLARE @sql NVARCHAR(MAX)
+            SET @sql = 'SELECT ' + @segment + ' [Category], 
+                        SUM(' + @analysis + ') [' + @analysis +']
+                        FROM vw_sales
+                        GROUP BY ' + @segment +
+                        ' ORDER BY SUM(' + @analysis + ') DESC'
+            EXEC sp_executesql @sql
+        END 
+        GO;
     --
     -- Sales Analysis
-        -- CREATE OR ALTER PROCEDURE sp_Sales_Analysis @segment NVARCHAR(50)
-        -- AS
-        -- BEGIN
-        --     DECLARE @sql NVARCHAR(MAX)
-        --     SET @sql = 'SELECT ' + @segment + ' [Category], 
-        --                 CONCAT( ' + Quotename('$','''') + ',
-        --                 SUM(Revenue)) [Revenue], 
-        --                 SUM(Quantity) [Quantity],
-        --                 COUNT(DISTINCT Order_ID) [Orders]
-        --                 FROM vw_sales
-        --                 GROUP BY ' + @segment +
-        --                 ' ORDER BY SUM(Revenue) DESC'
-        --     EXEC sp_executesql @sql
-        -- END 
+        CREATE OR ALTER PROCEDURE sp_Sales_Analysis @segment NVARCHAR(50)
+        AS
+        BEGIN
+            DECLARE @sql NVARCHAR(MAX)
+            SET @sql = 'SELECT ' + @segment + ' [Category], 
+                        CONCAT( ' + Quotename('$','''') + ',
+                        SUM(Revenue)) [Revenue], 
+                        SUM(Quantity) [Quantity],
+                        COUNT(DISTINCT Order_ID) [Orders]
+                        FROM vw_sales
+                        GROUP BY ' + @segment +
+                        ' ORDER BY SUM(Revenue) DESC'
+            EXEC sp_executesql @sql
+        END 
         GO;
     --
     -- Probability
