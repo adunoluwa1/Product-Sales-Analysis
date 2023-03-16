@@ -1,8 +1,8 @@
 # Product-Sales-Analysis
 Power BI, SQL and Python analysis of Product Sales Data 
 
-![Dashboard1](https://user-images.githubusercontent.com/99233674/225200335-6688409c-73b6-4266-a02d-3688ebd0377c.jpg)
+![Dashboard1](https://user-images.githubusercontent.com/99233674/225656506-71ef54bc-4bee-4b90-9723-658e8b01e71b.jpg)
 
-![Dashboard2](https://user-images.githubusercontent.com/99233674/225200360-9d73ed50-4f1f-4187-9288-b53bde381f3c.jpg)
+![Dashboard2](https://user-images.githubusercontent.com/99233674/225656536-69791ace-977f-46f0-bf05-506803c5ff48.jpg)
 
-![Dashboard3](https://user-images.githubusercontent.com/99233674/225371874-f33a0932-e419-4ddf-bb8d-1a90112b1bf9.jpg)
+![Dashboard3](https://user-images.githubusercontent.com/99233674/225656564-69dad0a1-2a68-4169-91a7-a4f413c703d8.jpg)
